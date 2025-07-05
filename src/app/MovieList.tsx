@@ -5,6 +5,7 @@ import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { searchMovies, fetchPopularMovies, Movie } from "../lib/tmdb";
 import Image from "next/image";
 import SkeletonCard from "./components/SkeletonCard";
+import Link from "next/link";
 
 export default function MovieList() {
   const [query, setQuery] = useState("");
@@ -80,7 +81,7 @@ export default function MovieList() {
                 <li className="text-gray-400 dark:text-gray-500 text-xl">No results found.</li>
               ) : (
                 searchResults.map((movie: Movie) => (
-                  <li key={movie.id} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform">
+                  <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform">
                     {movie.poster_path ? (
                       <Image
                         src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
@@ -100,7 +101,7 @@ export default function MovieList() {
                         <span>{movie.vote_average.toFixed(1)}</span>
                       </div>
                     </div>
-                  </li>
+                  </Link>
                 ))
               )}
             </ul>
@@ -113,7 +114,7 @@ export default function MovieList() {
           )}
           <ul className="w-full flex flex-col gap-4">
             {popularMovies.map((movie) => (
-              <li key={movie.id} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform">
+              <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform">
                 {movie.poster_path ? (
                   <Image
                     src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
@@ -133,7 +134,7 @@ export default function MovieList() {
                     <span>{movie.vote_average.toFixed(1)}</span>
                   </div>
                 </div>
-              </li>
+              </Link>
             ))}
             {((!popularData && popularStatus === "pending") || isFetchingNextPage) &&
               Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
