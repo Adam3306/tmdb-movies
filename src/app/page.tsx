@@ -1,6 +1,4 @@
-import dynamic from "next/dynamic";
-
-const MovieListClient = dynamic(() => import("./MovieListClient"), { ssr: false });
+import MovieListClient from "./MovieListClient";
 
 export default function Home() {
   return (
