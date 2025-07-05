@@ -16,8 +16,8 @@ export interface MovieDetails extends Movie {
   original_language: string;
 }
 
-export async function fetchPopularMovies(): Promise<Movie[]> {
-  const url = `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`;
+export async function fetchPopularMovies(page: number = 1): Promise<Movie[]> {
+  const url = `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=${page}`;
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error('Failed to fetch popular movies');
