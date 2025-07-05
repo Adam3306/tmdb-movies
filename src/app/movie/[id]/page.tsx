@@ -6,7 +6,8 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { fetchMovieDetails } from "@/lib/tmdb";
-import SkeletonCard from "../../components/SkeletonCard";
+import Loading from "../../components/Loading";
+import ErrorMessage from "../../components/ErrorMessage";
 
 export default function MovieDetailsPage() {
   const params = useParams();
@@ -28,7 +29,7 @@ export default function MovieDetailsPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
         <main className="w-full max-w-3xl mx-auto p-6">
-          <SkeletonCard />
+          <Loading />
         </main>
       </div>
     );
@@ -37,7 +38,7 @@ export default function MovieDetailsPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
         <main className="w-full max-w-3xl mx-auto p-6">
-          <div className="text-red-500 text-lg">{(error as Error)?.message || "Movie not found."}</div>
+          <ErrorMessage message={(error as Error)?.message || "Movie not found."} />
         </main>
       </div>
     );

@@ -6,6 +6,8 @@ import { searchMovies, fetchPopularMovies, Movie, fetchMovieDetails } from "../l
 import Image from "next/image";
 import SkeletonCard from "./components/SkeletonCard";
 import Link from "next/link";
+import Loading from "./components/Loading";
+import ErrorMessage from "./components/ErrorMessage";
 
 export default function MovieList() {
   const [query, setQuery] = useState("");
@@ -83,7 +85,7 @@ export default function MovieList() {
               ))}
             </ul>
           )}
-          {isSearchError && <div className="text-red-500 text-lg">{(searchError as Error).message}</div>}
+          {isSearchError && <ErrorMessage message={(searchError as Error).message} />}
           {searchResults && (
             <ul className="w-full flex flex-col gap-4">
               {searchResults.length === 0 ? (
@@ -119,7 +121,7 @@ export default function MovieList() {
       ) : (
         <section className="flex-1 flex flex-col items-center justify-center p-8 pt-0 w-full">
           {popularStatus === "error" && (
-            <div className="text-red-500 text-lg">{(popularError as Error).message}</div>
+            <ErrorMessage message={(popularError as Error).message} />
           )}
           <ul className="w-full flex flex-col gap-4">
             {popularMovies.map((movie) => (
@@ -149,7 +151,7 @@ export default function MovieList() {
               Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
           </ul>
           <div ref={loaderRef} className="h-12 flex items-center justify-center w-full">
-            {isFetchingNextPage && <span className="text-gray-400 dark:text-gray-500">Loading more...</span>}
+            {isFetchingNextPage && <Loading />}
             {!hasNextPage && <span className="text-gray-400 dark:text-gray-500">No more movies</span>}
           </div>
         </section>
