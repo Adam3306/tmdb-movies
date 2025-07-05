@@ -1,5 +1,3 @@
-"use client";
-
 export default function SkeletonCard() {
   return (
     <li className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow animate-pulse">
@@ -11,4 +9,4 @@ export default function SkeletonCard() {
       </div>
     </li>
   );
-} 
+}
