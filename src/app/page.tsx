@@ -1,24 +1,26 @@
-import React from "react";
-
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 flex flex-col items-center">
-      <header className="w-full max-w-2xl mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-center">TMDB Movies</h1>
-        <div className="w-full flex justify-center">
-          {/* Search Bar Placeholder */}
-          <input
-            type="text"
-            placeholder="Search for movies..."
-            className="w-full max-w-md px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-            disabled
-          />
-        </div>
-      </header>
-      <main className="w-full max-w-2xl flex-1">
-        {/* Movie List Placeholder */}
-        <div className="bg-white rounded shadow p-6 flex flex-col gap-4 items-center">
-          <span className="text-gray-400">Popular movies will appear here.</span>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+      <main className="w-full max-w-3xl mx-auto p-6">
+        <div className="relative rounded-3xl shadow-xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border border-gray-200 dark:border-gray-800 flex flex-col gap-8 overflow-hidden transition-colors duration-500">
+          {/* Header and Search Bar */}
+          <header className="w-full flex flex-col items-center gap-4 p-8 pb-0">
+            <h1 className="text-4xl font-extrabold text-center text-gray-900 dark:text-white drop-shadow mb-2">TMDB Movies</h1>
+            <input
+              type="text"
+              placeholder="Search for movies..."
+              className="w-full max-w-md px-5 py-3 rounded-full border border-gray-300 dark:border-gray-700 bg-white/70 dark:bg-gray-800/70 shadow focus:outline-none focus:ring-2 focus:ring-blue-400 text-lg transition-colors"
+              disabled
+            />
+          </header>
+          {/* Movie List Placeholder */}
+          <section className="flex-1 flex flex-col items-center justify-center p-8 pt-0">
+            <div className="w-full flex flex-col gap-4 items-center">
+              <div className="w-full h-40 rounded-2xl bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 flex items-center justify-center shadow-inner">
+                <span className="text-2xl text-gray-400 dark:text-gray-500">Popular movies will appear here.</span>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
     </div>
