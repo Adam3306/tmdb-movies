@@ -1,8 +1,10 @@
-# TMDB Movies App
+# TMDB Movies App 🎬
 
 A modern, professional web app to browse, search, and view details for movies using The Movie Database (TMDB) API.
 
-## Features
+**Live Demo:** 🚀 [Check out the app on Vercel](https://tmdb-movies-rose.vercel.app)
+
+## Features ✨
 
 - Infinite scroll for popular movies
 - Search with instant results and skeleton loading
@@ -17,7 +19,7 @@ A modern, professional web app to browse, search, and view details for movies us
 
 <!-- Add screenshots here -->
 
-## Getting Started
+## Getting Started 🛠️
 
 1. **Clone the repo:**
    ```sh
@@ -39,7 +41,7 @@ A modern, professional web app to browse, search, and view details for movies us
    npm run dev
    ```
 
-## Scripts
+## Scripts 🧪
 
 - `npm run dev` — Start development server
 - `npm run build` — Build for production
@@ -47,10 +49,10 @@ A modern, professional web app to browse, search, and view details for movies us
 - `npm run lint` — Lint code
 - `npm run test` — Run unit tests
 
-## Contributing
+## Contributing 🤝
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
-## License
+## License 📄
 
 [MIT](LICENSE)
