@@ -1,3 +1,5 @@
+import MovieListClient from "./MovieListClient";
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
@@ -13,14 +15,7 @@ export default function Home() {
               disabled
             />
           </header>
-          {/* Movie List Placeholder */}
-          <section className="flex-1 flex flex-col items-center justify-center p-8 pt-0">
-            <div className="w-full flex flex-col gap-4 items-center">
-              <div className="w-full h-40 rounded-2xl bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 flex items-center justify-center shadow-inner">
-                <span className="text-2xl text-gray-400 dark:text-gray-500">Popular movies will appear here.</span>
-              </div>
-            </div>
-          </section>
+          <MovieListClient />
         </div>
       </main>
     </div>
