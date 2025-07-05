@@ -54,6 +54,14 @@ export default function MovieList() {
 
   const popularMovies: Movie[] = popularData?.pages.flat() ?? [];
 
+  const handlePrefetch = (movie: Movie) => {
+    queryClient.prefetchQuery({ queryKey: ["movie", movie.id], queryFn: () => fetchMovieDetails(String(movie.id)) });
+    if (movie.poster_path && typeof window !== "undefined") {
+      const img = new window.Image();
+      img.src = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+    }
+  };
+
   return (
     <>
       <header className="w-full flex flex-col items-center gap-4 p-8 pb-0">
@@ -82,7 +90,7 @@ export default function MovieList() {
                 <li className="text-gray-400 dark:text-gray-500 text-xl">No results found.</li>
               ) : (
                 searchResults.map((movie: Movie) => (
-                  <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform" onMouseEnter={() => queryClient.prefetchQuery({ queryKey: ["movie", movie.id], queryFn: () => fetchMovieDetails(String(movie.id)) })}>
+                  <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform" onMouseEnter={() => handlePrefetch(movie)}>
                     {movie.poster_path ? (
                       <Image
                         src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
@@ -115,7 +123,7 @@ export default function MovieList() {
           )}
           <ul className="w-full flex flex-col gap-4">
             {popularMovies.map((movie) => (
-              <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform" onMouseEnter={() => queryClient.prefetchQuery({ queryKey: ["movie", movie.id], queryFn: () => fetchMovieDetails(String(movie.id)) })}>
+              <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform" onMouseEnter={() => handlePrefetch(movie)}>
                 {movie.poster_path ? (
                   <Image
                     src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
