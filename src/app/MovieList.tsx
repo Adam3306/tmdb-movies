@@ -1,13 +1,17 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import { searchMovies, fetchPopularMovies, Movie } from "../lib/tmdb";
+import { useQuery, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { searchMovies, fetchPopularMovies, Movie, fetchMovieDetails } from "../lib/tmdb";
 import Image from "next/image";
 import SkeletonCard from "./components/SkeletonCard";
+import Link from "next/link";
+import Loading from "./components/Loading";
+import ErrorMessage from "./components/ErrorMessage";
 
 export default function MovieList() {
   const [query, setQuery] = useState("");
+  const queryClient = useQueryClient();
   // Search query
   const {
     data: searchResults,
@@ -52,6 +56,14 @@ export default function MovieList() {
 
   const popularMovies: Movie[] = popularData?.pages.flat() ?? [];
 
+  const handlePrefetch = (movie: Movie) => {
+    queryClient.prefetchQuery({ queryKey: ["movie", movie.id], queryFn: () => fetchMovieDetails(String(movie.id)) });
+    if (movie.poster_path && typeof window !== "undefined") {
+      const img = new window.Image();
+      img.src = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+    }
+  };
+
   return (
     <>
       <header className="w-full flex flex-col items-center gap-4 p-8 pb-0">
@@ -73,14 +85,14 @@ export default function MovieList() {
               ))}
             </ul>
           )}
-          {isSearchError && <div className="text-red-500 text-lg">{(searchError as Error).message}</div>}
+          {isSearchError && <ErrorMessage message={(searchError as Error).message} />}
           {searchResults && (
             <ul className="w-full flex flex-col gap-4">
               {searchResults.length === 0 ? (
                 <li className="text-gray-400 dark:text-gray-500 text-xl">No results found.</li>
               ) : (
                 searchResults.map((movie: Movie) => (
-                  <li key={movie.id} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform">
+                  <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform" onMouseEnter={() => handlePrefetch(movie)}>
                     {movie.poster_path ? (
                       <Image
                         src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
@@ -100,7 +112,7 @@ export default function MovieList() {
                         <span>{movie.vote_average.toFixed(1)}</span>
                       </div>
                     </div>
-                  </li>
+                  </Link>
                 ))
               )}
             </ul>
@@ -109,11 +121,11 @@ export default function MovieList() {
       ) : (
         <section className="flex-1 flex flex-col items-center justify-center p-8 pt-0 w-full">
           {popularStatus === "error" && (
-            <div className="text-red-500 text-lg">{(popularError as Error).message}</div>
+            <ErrorMessage message={(popularError as Error).message} />
           )}
           <ul className="w-full flex flex-col gap-4">
             {popularMovies.map((movie) => (
-              <li key={movie.id} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform">
+              <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform" onMouseEnter={() => handlePrefetch(movie)}>
                 {movie.poster_path ? (
                   <Image
                     src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
@@ -133,13 +145,13 @@ export default function MovieList() {
                     <span>{movie.vote_average.toFixed(1)}</span>
                   </div>
                 </div>
-              </li>
+              </Link>
             ))}
             {((!popularData && popularStatus === "pending") || isFetchingNextPage) &&
               Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
           </ul>
           <div ref={loaderRef} className="h-12 flex items-center justify-center w-full">
-            {isFetchingNextPage && <span className="text-gray-400 dark:text-gray-500">Loading more...</span>}
+            {isFetchingNextPage && <Loading />}
             {!hasNextPage && <span className="text-gray-400 dark:text-gray-500">No more movies</span>}
           </div>
         </section>
