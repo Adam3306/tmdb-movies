@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import { searchMovies, fetchPopularMovies, Movie } from "../lib/tmdb";
+import { useQuery, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { searchMovies, fetchPopularMovies, Movie, fetchMovieDetails } from "../lib/tmdb";
 import Image from "next/image";
 import SkeletonCard from "./components/SkeletonCard";
 import Link from "next/link";
 
 export default function MovieList() {
   const [query, setQuery] = useState("");
+  const queryClient = useQueryClient();
   // Search query
   const {
     data: searchResults,
@@ -81,7 +82,7 @@ export default function MovieList() {
                 <li className="text-gray-400 dark:text-gray-500 text-xl">No results found.</li>
               ) : (
                 searchResults.map((movie: Movie) => (
-                  <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform">
+                  <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform" onMouseEnter={() => queryClient.prefetchQuery({ queryKey: ["movie", movie.id], queryFn: () => fetchMovieDetails(String(movie.id)) })}>
                     {movie.poster_path ? (
                       <Image
                         src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
@@ -114,7 +115,7 @@ export default function MovieList() {
           )}
           <ul className="w-full flex flex-col gap-4">
             {popularMovies.map((movie) => (
-              <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform">
+              <Link key={movie.id} href={`/movie/${movie.id}`} className="flex items-center gap-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-xl p-4 shadow hover:scale-[1.01] transition-transform" onMouseEnter={() => queryClient.prefetchQuery({ queryKey: ["movie", movie.id], queryFn: () => fetchMovieDetails(String(movie.id)) })}>
                 {movie.poster_path ? (
                   <Image
                     src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
